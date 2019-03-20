@@ -10,7 +10,7 @@ j=json.loads(r.text)
 if j['status']=='OK':
     print j['input']
     for i in j['result']:
-        print i[0],i[1],
+        print i[0]+'|'+i[1],
 else:
     print 'status error'
     print j
