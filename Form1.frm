@@ -48,6 +48,22 @@ Begin VB.Form Form1
    Begin VB.Menu m_ref 
       Caption         =   "刷新(&R)"
    End
+   Begin VB.Menu m_pop 
+      Caption         =   "POP"
+      Visible         =   0   'False
+      Begin VB.Menu m_cp 
+         Caption         =   "复制(&C)"
+         Shortcut        =   ^C
+      End
+      Begin VB.Menu m_del 
+         Caption         =   "删除(&D)"
+         Shortcut        =   {DEL}
+      End
+      Begin VB.Menu m_cls 
+         Caption         =   "清空(&L)"
+         Shortcut        =   ^L
+      End
+   End
 End
 Attribute VB_Name = "Form1"
 Attribute VB_GlobalNameSpace = False
@@ -58,6 +74,7 @@ Private Declare Function memmap Lib "getTextW.dll" () As Long
 Private Declare Sub runform Lib "getTextW.dll" ()
 Private Declare Function FindWindow Lib "user32" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
 Private Declare Function SetActiveWindow Lib "user32" (ByVal hwnd As Long) As Long
+Private Declare Function SetForegroundWindow Lib "user32" (ByVal hwnd As Long) As Long
 Dim txt
 
 Function urlGet(url)
@@ -88,6 +105,12 @@ Private Sub Form_Load()
     m_on.Checked = True
 End Sub
 
+Private Sub List1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If Button = 2 Then
+        PopupMenu m_pop
+    End If
+End Sub
+
 Private Sub m_auto_Click()
     m_auto.Checked = Not m_auto.Checked
 End Sub
@@ -116,6 +139,7 @@ Private Sub Timer1_Timer()
             VB.Clipboard.SetText t, vbCFText
             h = FindWindow("WeChatMainWndForPC", "微信")
             SetActiveWindow h
+            SetForegroundWindow h
             SendKeys "^v{ENTER}"
         End If
         If List1.ListCount > 10 Then
