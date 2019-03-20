@@ -1,0 +1,5 @@
+LIBRARY "getTextW.dll" BASE=0x69400000
+EXPORTS
+    inject @1
+    memmap @2
+    runform @3

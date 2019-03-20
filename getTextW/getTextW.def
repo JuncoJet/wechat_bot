@@ -1,0 +1,5 @@
+LIBRARY "getTextW.dll"
+EXPORTS
+	inject
+	memmap
+	runform
