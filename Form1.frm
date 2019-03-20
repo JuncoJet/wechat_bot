@@ -41,6 +41,9 @@ Begin VB.Form Form1
       Begin VB.Menu m_uniq 
          Caption         =   "去重(&U)"
       End
+      Begin VB.Menu m_auto 
+         Caption         =   "自动回复(&A)"
+      End
    End
    Begin VB.Menu m_ref 
       Caption         =   "刷新(&R)"
@@ -53,6 +56,8 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Declare Function memmap Lib "getTextW.dll" () As Long
 Private Declare Sub runform Lib "getTextW.dll" ()
+Private Declare Function FindWindow Lib "user32" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
+Private Declare Function SetActiveWindow Lib "user32" (ByVal hwnd As Long) As Long
 Dim txt
 
 Function urlGet(url)
@@ -80,11 +85,41 @@ Private Sub Form_Load()
     If App.PrevInstance Then
         End
     End If
+    m_on.Checked = True
+End Sub
+
+Private Sub m_auto_Click()
+    m_auto.Checked = Not m_auto.Checked
+End Sub
+
+Private Sub m_on_Click()
+    m_on.Checked = Not m_on.Checked
+    Timer1.Enabled = m_on.Checked
+End Sub
+
+Private Sub m_ref_Click()
+    txt = vbNullString
+End Sub
+
+Private Sub m_uniq_Click()
+    m_uniq.Checked = Not m_uniq.Checked
 End Sub
 
 Private Sub Timer1_Timer()
     If txt <> Text1 Then
         txt = Text1
-        List1.AddItem urlPost("http://127.0.0.1:8080/fc_test", "q=" & txt)
+        t = urlPost("http://127.0.0.1:8080/turing", "q=" & txt)
+        List1.AddItem t
+        If m_auto.Checked Then
+            '这里自动回复处理过程
+            VB.Clipboard.Clear
+            VB.Clipboard.SetText t, vbCFText
+            h = FindWindow("WeChatMainWndForPC", "微信")
+            SetActiveWindow h
+            SendKeys "^v{ENTER}"
+        End If
+        If List1.ListCount > 10 Then
+            List1.RemoveItem (0)
+        End If
     End If
 End Sub

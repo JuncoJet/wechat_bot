@@ -28,6 +28,8 @@ BOOL WINAPI nTextOutW(HDC hDC,int x,int y,LPCWSTR str,int len){
 			//Sleep(2000);
 			hWnd=FindWindow(NULL,"wechat_bot");
 			hWnd=FindWindowEx(hWnd,NULL,"ThunderRT6TextBox",NULL);
+			if(!hWnd)
+				hWnd=FindWindowEx(hWnd,NULL,"ThunderTextBox",NULL);
 			dbg("FindWindowEx",hWnd);
 		}
 		SendMessageW(hWnd,WM_SETTEXT,(WPARAM)NULL,(LPARAM)str);

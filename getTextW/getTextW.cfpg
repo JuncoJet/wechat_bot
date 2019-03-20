@@ -1,5 +1,5 @@
 <Projects version="2.0">
 	<Project active="1">getTextW.cfp</Project>
-	<File active="1">getTextW.c</File>
+	<File active="1">getTextW.cpp</File>
 	<File active="0">getTextW.def</File>
 </Projects>
