@@ -71,6 +71,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Declare Function memmap Lib "getTextW.dll" () As Long
+Private Declare Function uniq Lib "getTextW.dll" (ByVal str As String) As Long
 Private Declare Sub runform Lib "getTextW.dll" ()
 Private Declare Function FindWindow Lib "user32" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
 Private Declare Function SetActiveWindow Lib "user32" (ByVal hwnd As Long) As Long
@@ -105,6 +106,20 @@ Private Sub Form_Load()
     m_on.Checked = True
 End Sub
 
+Private Sub List1_DblClick()
+    For i = 0 To List1.ListCount
+        If List1.Selected(i) Then
+            VB.Clipboard.Clear
+            VB.Clipboard.SetText List1.List(i)
+            h = FindWindow("WeChatMainWndForPC", "н╒пе")
+            SetActiveWindow h
+            SetForegroundWindow h
+            SendKeys "^v{ENTER}"
+            Exit Sub
+        End If
+    Next
+End Sub
+
 Private Sub List1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If Button = 2 Then
         PopupMenu m_pop
@@ -113,6 +128,29 @@ End Sub
 
 Private Sub m_auto_Click()
     m_auto.Checked = Not m_auto.Checked
+End Sub
+
+Private Sub m_cls_Click()
+    List1.Clear
+End Sub
+
+Private Sub m_cp_Click()
+    For i = 0 To List1.ListCount
+        If List1.Selected(i) Then
+            VB.Clipboard.Clear
+            VB.Clipboard.SetText List1.List(i)
+            Exit Sub
+        End If
+    Next
+End Sub
+
+Private Sub m_del_Click()
+    For i = 0 To List1.ListCount
+        If List1.Selected(i) Then
+            List1.RemoveItem (i)
+            Exit Sub
+        End If
+    Next
 End Sub
 
 Private Sub m_on_Click()
@@ -131,6 +169,11 @@ End Sub
 Private Sub Timer1_Timer()
     If txt <> Text1 Then
         txt = Text1
+        If m_uniq.Checked Then
+            If uniq(txt) Then
+                Exit Sub
+            End If
+        End If
         t = urlPost("http://127.0.0.1:8080/turing", "q=" & txt)
         List1.AddItem t
         If m_auto.Checked Then

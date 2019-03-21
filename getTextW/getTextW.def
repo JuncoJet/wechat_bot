@@ -3,3 +3,4 @@ EXPORTS
 	inject
 	memmap
 	runform
+	uniq

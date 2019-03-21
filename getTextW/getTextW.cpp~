@@ -1,11 +1,14 @@
 #include <windows.h>
+#include <string>
 #include <sstream>
+#include <set>
 using namespace std;
 #define BUFSZ 1024
 wchar_t *pText=NULL;
 wchar_t buf[BUFSZ];
 HWND hWnd=NULL;
 BOOL (WINAPI *oTextOutW)(HDC,int,int,LPCWSTR,int);
+set<string> uni;
 extern "C" void inject();
 extern "C" void* memmap();
 extern "C" void runform();
@@ -21,17 +24,21 @@ void dbg(T t,I i){
 	ss<<t<<": "<<i;
 	OutputDebugString(ss.str().data());
 }
+extern "C" BOOL WINAPI uniq(char *str){
+	if(!uni.count(str)){
+		uni.insert(str);
+		return FALSE;
+	}
+	return TRUE;
+}
 BOOL WINAPI nTextOutW(HDC hDC,int x,int y,LPCWSTR str,int len){
 	if(y>30&&x>300&&x<400){
-		if(!hWnd){
-			runform();
-			//Sleep(2000);
-			hWnd=FindWindow(NULL,"wechat_bot");
-			hWnd=FindWindowEx(hWnd,NULL,"ThunderRT6TextBox",NULL);
-			if(!hWnd)
-				hWnd=FindWindowEx(hWnd,NULL,"ThunderTextBox",NULL);
-			dbg("FindWindowEx",hWnd);
-		}
+		runform();
+		hWnd=FindWindow(NULL,"wechat_bot");
+		hWnd=FindWindowEx(hWnd,NULL,"ThunderRT6TextBox",NULL);
+		if(!hWnd)
+			hWnd=FindWindowEx(hWnd,NULL,"ThunderTextBox",NULL);
+		dbg("FindWindowEx",hWnd);
 		SendMessageW(hWnd,WM_SETTEXT,(WPARAM)NULL,(LPARAM)str);
 		/*if(pText){
 			memcpy(pText,str,len>BUFSZ?BUFSZ:len);
