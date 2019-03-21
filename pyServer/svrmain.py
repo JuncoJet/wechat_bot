@@ -31,6 +31,24 @@ def do_turing():
     url="http://www.tuling123.com/openapi/api"
     r=requests.post(url,params=payload)
     return json.loads(r.text)['text']
-    
+
+@get('/jquery.js')
+@view('jquery-2.0.0.min.js')
+def jquery():
+    return
+
+@get('/admin')
+@view('admin')
+def admin():
+    return
+
+@post('/admin')
+def do_admin():
+    q=request.forms.get('q')
+    a=request.forms.get('a')
+    if q and a:
+        #db().
+    return
+
 run(host='0.0.0.0', port=8080,debug=True)
 application=default_app()

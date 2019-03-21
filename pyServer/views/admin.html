@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>微信机器人后台管理</title>
+    <script src="/jquery.js" type="text/javascript"></script>
+    <style>
+        .d{padding: 10px;}
+    </style>
+</head>
+<body>
+    <div class="d">
+        输入测试语句：<input type="text" class="ce">
+        <input type="button" value="测试">
+        <input type="button" value="清空">
+        <div class="output"></div>
+    </div>
+    <div class="d">
+        训练<br>
+        输入训练语句：<input type="text" class="xl1"><br>
+        输入回答语句：<input type="text" class="xl2">
+        <input type="button" value="训练">
+    </div>
+    <script>
+        $("input[value='测试']").click(function () {
+            var t=$(".ce").val();
+            var tt="答案";
+            $(".output").append(t+"<br>"+tt+"<br><br>");
+        });
+        $("input[value='训练']").click(function () {
+            alert($(".xl1").val()+$(".xl2").val());
+        });
+    </script>
+</body>
+</html>
