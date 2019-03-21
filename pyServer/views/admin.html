@@ -22,13 +22,19 @@
         <input type="button" value="训练">
     </div>
     <script>
-        $("input[value='测试']").click(function () {
-            var t=$(".ce").val();
-            var tt="答案";
-            $(".output").append(t+"<br>"+tt+"<br><br>");
-        });
-        $("input[value='训练']").click(function () {
-            alert($(".xl1").val()+$(".xl2").val());
+        $(function () {
+            $("input[value='测试']").click(function () {
+                var t=$(".ce").val();
+                $.post("/turing",{q:t},function (data) {
+                    $(".output").append(t+"<br>"+data+"<br><br>");
+                });
+            });
+            $("input[value='清空']").click(function () {
+                $(".output").empty();
+            });
+            $("input[value='训练']").click(function () {
+                alert($(".xl1").val()+$(".xl2").val());
+            });
         });
     </script>
 </body>

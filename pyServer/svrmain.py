@@ -5,12 +5,9 @@ from bottle import request,response,run,get,post,template,view,static_file,redir
 @post('/fc_test')
 def fc_test():
     q=request.forms.get('q')
-    r=requests.post("https://www.sogou.com/labs/webservice/sogou_word_seg.php",
-                      {
-                          'q':q,
-                          'fmt':'js'
-                       }
-                  )
+    payload={'q':q,'fmt':'js'}
+    url="https://www.sogou.com/labs/webservice/sogou_word_seg.php"
+    r=requests.post(url,params=payload)
     j=json.loads(r.text)
     r=''
     if j['status']=='OK':
@@ -37,6 +34,11 @@ def do_turing():
 def jquery():
     return
 
+@post('/mybot')
+def do_mybot():
+    #这里添加自己的机器人处理
+    return
+
 @get('/admin')
 @view('admin')
 def admin():
@@ -44,10 +46,19 @@ def admin():
 
 @post('/admin')
 def do_admin():
+    #机器人后台调教
     q=request.forms.get('q')
     a=request.forms.get('a')
     if q and a:
-        #db().
+        payload={'q':q,'fmt':'js'}
+        url="https://www.sogou.com/labs/webservice/sogou_word_seg.php"
+        r=requests.post(url,params=payload)
+        qfc=json.loads(r.text)
+        r=requests.post(url,params=payload)
+        afc=json.loads(r.text)
+        if qfc['status']=='OK':
+            for i in qfc['result']:
+               pass 
     return
 
 run(host='0.0.0.0', port=8080,debug=True)

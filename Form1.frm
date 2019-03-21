@@ -45,12 +45,8 @@ Begin VB.Form Form1
          Caption         =   "自动回复(&A)"
       End
    End
-   Begin VB.Menu m_ref 
-      Caption         =   "刷新(&R)"
-   End
    Begin VB.Menu m_pop 
-      Caption         =   "POP"
-      Visible         =   0   'False
+      Caption         =   "编辑(&E)"
       Begin VB.Menu m_cp 
          Caption         =   "复制(&C)"
          Shortcut        =   ^C
@@ -63,6 +59,9 @@ Begin VB.Form Form1
          Caption         =   "清空(&L)"
          Shortcut        =   ^L
       End
+   End
+   Begin VB.Menu m_ref 
+      Caption         =   "刷新(&R)"
    End
 End
 Attribute VB_Name = "Form1"
