@@ -11,7 +11,7 @@
 <Folder name="Other Files">
 	<File>getTextW.def</File>
 </Folder>
-<Attribute topline="31" x="38" y="51">getTextW.cpp</Attribute>
+<Attribute topline="103" x="14" y="127">getTextW.cpp</Attribute>
 <Attribute topline="1" x="6" y="7">getTextW.def</Attribute>
 <FolderState>111</FolderState>
 <DefConfig>mingw5</DefConfig>

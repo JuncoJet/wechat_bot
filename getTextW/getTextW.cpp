@@ -7,6 +7,7 @@
 using namespace std;
 wchar_t *pText=NULL;
 wchar_t buf[BUFSZ];
+char app[]="wechat_bot";
 HWND hWnd=NULL;
 HINSTANCE hMod=NULL;
 BOOL (WINAPI *oTextOutW)(HDC,int,int,LPCWSTR,int);
@@ -17,17 +18,17 @@ EXTC void runform();
 template <class T>
 void dbg(T t){
 	stringstream ss;
-	ss<<"[wechat_bot] "<<t;
+	ss<<"["<<app<<"] "<<t;
 	OutputDebugString(ss.str().data());
 }
 template <class T,class I>
 void dbg(T t,I i){
 	stringstream ss;
-	ss<<"[wechat_bot] "<<t<<": "<<i;
+	ss<<"["<<app<<"] "<<t<<": "<<i;
 	OutputDebugString(ss.str().data());
 }
 void __fastcall msgbox(char *str){
-	MessageBox(0,str,"msg",0);
+	MessageBox(0,str,app,0);
 }
 EXTC BOOL WINAPI uniq(char *str){
 	if(!uni.count(str)){
@@ -85,8 +86,15 @@ EXTC void inject(){
 		WriteProcessMemory(hProc,data,p,strlen(p),&dw);
 		LPVOID ll=(LPVOID)GetProcAddress(LoadLibrary("kernel32.dll"),"LoadLibraryA");
 		HANDLE hThr = CreateRemoteThread(hProc, NULL, 0,
-										(LPTHREAD_START_ROUTINE)ll,
-										 data, 0, 0);
+		                                (LPTHREAD_START_ROUTINE)ll,
+		                                 data, 0, 0);
+		if(hThr){
+			CloseHandle(hThr);
+		}
+		if(hProc){
+			VirtualFreeEx(hProc,data,0x200,MEM_RELEASE);
+			CloseHandle(hProc);
+		}
 	}else{
 		msgbox("Î´ÕÒµ½Î¢ÐÅ´°¿Ú£¡");
 	}
@@ -116,7 +124,7 @@ EXTC BOOL APIENTRY DllMain( HANDLE hModule,
 		GetModuleFileName(GetModuleHandle(NULL),path,MAX_PATH);
 		dbg(path);
 		if(strstr(path,"WeChat")){
-			dbg("isWechat");
+			dbg("isWeChat");
 			hook();
 		}
 	}

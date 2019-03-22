@@ -90,6 +90,7 @@ Function urlGet(url)
 End Function
 
 Function urlPost(url, data)
+On Error GoTo err
     Set XMLHTTP = CreateObject("Microsoft.XMLHTTP")
     With XMLHTTP
         .Open "POST", url, False
@@ -98,6 +99,9 @@ Function urlPost(url, data)
         urlPost = .responseText
     End With
     Set XMLHTTP = Nothing
+    Exit Function
+err:
+    MsgBox "连接服务器异常！"
 End Function
 
 Private Sub Form_Load()
