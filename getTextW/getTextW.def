@@ -4,3 +4,4 @@ EXPORTS
 	memmap
 	runform
 	uniq
+	hook

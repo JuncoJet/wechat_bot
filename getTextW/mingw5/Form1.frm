@@ -72,9 +72,11 @@ Attribute VB_Exposed = False
 Private Declare Function memmap Lib "getTextW.dll" () As Long
 Private Declare Function uniq Lib "getTextW.dll" (ByVal str As String) As Long
 Private Declare Sub runform Lib "getTextW.dll" ()
+Private Declare Sub inject Lib "getTextW.dll" ()
 Private Declare Function FindWindow Lib "user32" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
 Private Declare Function SetActiveWindow Lib "user32" (ByVal hwnd As Long) As Long
 Private Declare Function SetForegroundWindow Lib "user32" (ByVal hwnd As Long) As Long
+Private Declare Function RtlAdjustPrivilege& Lib "ntdll" (ByVal Privilege&, ByVal NewValue&, ByVal NewThread&, OldValue&)
 Dim txt
 
 Function urlGet(url)
@@ -103,6 +105,8 @@ Private Sub Form_Load()
         End
     End If
     m_on.Checked = True
+    RtlAdjustPrivilege 20, 1, 0, 0
+    inject
 End Sub
 
 Private Sub List1_DblClick()
