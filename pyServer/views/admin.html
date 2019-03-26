@@ -25,8 +25,12 @@
         $(function () {
             $("input[value='测试']").click(function () {
                 var t=$(".ce").val();
-                $.post("/fc_test",{q:t},function (data) {
-                    $(".output").append(t+"<br>"+data+"<br><br>");
+                $.post("/mybot",{q:t},function (data) {
+                    if(data.code){
+                        alert(data.msg);
+                    }else{
+                        $(".output").append(t+"<br>"+data+"<br><br>");
+                    }
                 });
                 /*$.post("https://www.sogou.com/labs/webservice/sogou_word_seg.php",{q:t,fmt:'js'},function (data) {
                     $(".output").append(t+"<br>"+data+"<br><br>");
